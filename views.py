@@ -4,17 +4,17 @@ from datetime import datetime
 from pymysql import connections
 import os
 import boto3
-from . import app
 
+app = flask.Flask(__name__)
 
 app.secret_key = 'kepsi'
 
 db_conn = connections.Connection(
-    host="127.0.0.1",
+    host="database-3.cgnhhjdy7gio.us-east-1.rds.amazonaws.com",
     port=3306,
-    user="root",
-    password="",
-    db="Asg"
+    user="aws-user",
+    password="Bait3273",
+    db="Assignment"
 )
 
 bucket = "tanjiahe-assignment"
@@ -360,3 +360,6 @@ def supervise():
     data = cursor.fetchall()
 
     return render_template("supervise.html",type=type, data=data)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80, debug=True)
