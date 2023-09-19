@@ -3,7 +3,7 @@
 
 {% endblock %}
 {% block content %}
-<form action="{{ url_for('editProfile') }}" method="post">
+<form action="{{ url_for('editProfile') }}" method="post" enctype="multipart/form-data">
 <div class="page-content page-container" id="page-content">
     <div class="padding">
         <div class="row container d-flex justify-content-center">
@@ -16,7 +16,7 @@
                                 <div class="m-b-25">
                                     <div class="image-upload">
                                         <label for="img">
-                                            <img id="preview-image"
+                                            <img id="preview-image" name="preview-image"
                                                 src="{{ url_for('static', filename='img/profile.png') }}"
                                                 alt="Select Profile" style="height: 100px; width: 100px;" />
                                         </label>
