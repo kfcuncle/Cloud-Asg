@@ -5,7 +5,7 @@ from pymysql import connections
 import os
 import boto3
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 
 app.secret_key = 'kepsi'
 
