@@ -12,7 +12,7 @@ app.secret_key = 'kepsi'
 db_conn = connections.Connection(
     host="database-3.cgnhhjdy7gio.us-east-1.rds.amazonaws.com",
     port=3306,
-    user="aws-user",
+    user="aws_user",
     password="Bait3273",
     db="Assignment"
 )
