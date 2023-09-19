@@ -249,19 +249,19 @@ def internship(id=None):
         db_conn.commit()
     
     if request.method == 'POST': 
-        if request.form.get('report1'):
+        if request.files['report1']:
             create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
             cursor.execute(create_sql,(None,'report1',request.form.get('report1'),datetime.now(),None,Id))
             db_conn.commit()
-        if request.form.get('report2'):
+        if request.files['report2']:
             create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
             cursor.execute(create_sql,(None,'report2',request.form.get('report2'),datetime.now(),None,Id))
             db_conn.commit()
-        if request.form.get('report3'):
+        if request.files['report3']:
             create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
             cursor.execute(create_sql,(None,'report3',request.form.get('report3'),datetime.now(),None,Id))
             db_conn.commit()
-        if request.form.get('report4'):
+        if request.files['report4']:
             create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
             cursor.execute(create_sql,(None,'report4',request.form.get('report4'),datetime.now(),None,Id))
             db_conn.commit()
@@ -360,6 +360,6 @@ def supervise():
     data = cursor.fetchall()
 
     return render_template("supervise.html",type=type, data=data)
-
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
