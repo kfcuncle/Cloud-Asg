@@ -190,7 +190,7 @@ def editProfile():
                 s3_location = ''
             else:
                 s3_location = '-' + s3_location
-                img = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                img_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
                     s3_location,
                     bucket,
                     image_file_name_in_s3)
@@ -205,18 +205,18 @@ def editProfile():
                     s3_location = ''
             else:
                 s3_location = '-' + s3_location
-                resume = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                resume_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
                     s3_location,
                     bucket,
                     image_file_name_in_s3)
 
         if type == 'student':
             update_sql = 'UPDATE student SET studentName = %s, studentEmail = %s, studentProfilePic = %s, studentPhoneNo = %s, studentLocation = %s, studentProgramme = %s, studentCGPA = %s, studentJobExperience = %s, studentSkill = %s, studentResumeLink = %s WHERE studentID = %s'
-            cursor.execute(update_sql, (name,email,img,phone,location,programme,cgpa,jobExperience,skill,resume,Id))
+            cursor.execute(update_sql, (name,email,img_url,phone,location,programme,cgpa,jobExperience,skill,resume_url,Id))
             db_conn.commit()
         else:
             update_sql = 'UPDATE company SET companyName = %s, companyEmail = %s, companyProfilePic = %s, companyLocation = %s, companyIndustry = %s, companySize = %s, companyDescription = %s WHERE companyID = %s'
-            cursor.execute(update_sql, (name,email,img,location,industry,size,description,Id))
+            cursor.execute(update_sql, (name,email,img_url,location,industry,size,description,Id))
             db_conn.commit()
         
         return redirect(url_for("profile"))
