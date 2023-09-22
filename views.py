@@ -180,33 +180,35 @@ def editProfile():
         size = request.form.get("size")
         description = request.form.get("description")
 
-        image_file_name_in_s3 = "Id-" + str(Id) + "_image_file"
-        s3 = boto3.resource('s3')
-        s3.Bucket(bucket).put_object(Key=image_file_name_in_s3, Body=img)
-        bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
-        s3_location = (bucket_location['LocationConstraint'])
-        if s3_location is None:
+        if img:
+            image_file_name_in_s3 = "Id-" + str(Id) + "_image_file"
+            s3 = boto3.resource('s3')
+            s3.Bucket(bucket).put_object(Key=image_file_name_in_s3, Body=img)
+            bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
+            s3_location = (bucket_location['LocationConstraint'])
+            if s3_location is None:
                 s3_location = ''
-        else:
-            s3_location = '-' + s3_location
-            img = "https://s3{0}.amazonaws.com/{1}/{2}".format(
-                s3_location,
-                bucket,
-                image_file_name_in_s3)
-            
-        image_file_name_in_s3 = "Id-" + str(Id) + "_image_file"
-        s3 = boto3.resource('s3')
-        s3.Bucket(bucket).put_object(Key=image_file_name_in_s3, Body=resume)
-        bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
-        s3_location = (bucket_location['LocationConstraint'])
-        if s3_location is None:
-                s3_location = ''
-        else:
-            s3_location = '-' + s3_location
-            resume = "https://s3{0}.amazonaws.com/{1}/{2}".format(
-                s3_location,
-                bucket,
-                image_file_name_in_s3)
+            else:
+                s3_location = '-' + s3_location
+                img = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                    s3_location,
+                    bucket,
+                    image_file_name_in_s3)
+
+        if resume:    
+            image_file_name_in_s3 = "Id-" + str(Id) + "_image_file"
+            s3 = boto3.resource('s3')
+            s3.Bucket(bucket).put_object(Key=image_file_name_in_s3, Body=resume)
+            bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
+            s3_location = (bucket_location['LocationConstraint'])
+            if s3_location is None:
+                    s3_location = ''
+            else:
+                s3_location = '-' + s3_location
+                resume = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                    s3_location,
+                    bucket,
+                    image_file_name_in_s3)
 
         if type == 'student':
             update_sql = 'UPDATE student SET studentName = %s, studentEmail = %s, studentProfilePic = %s, studentPhoneNo = %s, studentLocation = %s, studentProgramme = %s, studentCGPA = %s, studentJobExperience = %s, studentSkill = %s, studentResumeLink = %s WHERE studentID = %s'
