@@ -197,9 +197,9 @@ def editProfile():
                 image_file_name_in_s3)
 
         if resume:    
-            image_file_name_in_s3 = "Id-" + str(Id) + "_image_file"
+            pdf_file_name_in_s3 = "Id-" + str(Id) + "_resume_pdf"
             s3 = boto3.resource('s3')
-            s3.Bucket(bucket).put_object(Key=image_file_name_in_s3, Body=resume)
+            s3.Bucket(bucket).put_object(Key=pdf_file_name_in_s3, Body=resume)
             bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
             s3_location = (bucket_location['LocationConstraint'])
             if s3_location is None:
@@ -209,7 +209,7 @@ def editProfile():
             resume_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
                 s3_location,
                 bucket,
-                image_file_name_in_s3)
+                pdf_file_name_in_s3)
 
         if type == 'student':
             update_sql = 'UPDATE student SET studentName = %s, studentEmail = %s, studentProfilePic = %s, studentPhoneNo = %s, studentLocation = %s, studentProgramme = %s, studentCGPA = %s, studentJobExperience = %s, studentSkill = %s, studentResumeLink = %s WHERE studentID = %s'
