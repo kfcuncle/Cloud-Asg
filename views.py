@@ -226,7 +226,7 @@ def editProfile():
 
 @app.route("/internship", methods=['GET', 'POST'])
 @app.route("/internship/<id>", methods=['GET', 'POST'])
-def internship(id=None):
+def internship(Id=None):
     type = session['userType']
     if type == 'admin':
         Id = Id
@@ -254,21 +254,78 @@ def internship(id=None):
     if request.method == 'POST': 
         if 'report1' in request.files:
             if request.files['report1']:
+                report1 = request.files['report1']
+                pdf_file_name_in_s3 = type+"Id-" + str(Id) + "_report1_pdf"
+                s3 = boto3.resource('s3')
+                s3.Bucket(bucket).put_object(Key=pdf_file_name_in_s3, Body=report1)
+                bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
+                s3_location = (bucket_location['LocationConstraint'])
+                if s3_location is None:
+                    s3_location = ''
+                else:
+                    s3_location = '-' + s3_location
+                resume_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                    s3_location,
+                    bucket,
+                    pdf_file_name_in_s3)
                 create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
                 cursor.execute(create_sql,(None,'report1',request.form.get('report1'),datetime.now(),None,Id))
                 db_conn.commit()
+
         if 'report2' in request.files:
             if request.files['report2']:
+                report1 = request.files['report2']
+                pdf_file_name_in_s3 = type+"Id-" + str(Id) + "_report2_pdf"
+                s3 = boto3.resource('s3')
+                s3.Bucket(bucket).put_object(Key=pdf_file_name_in_s3, Body=report2)
+                bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
+                s3_location = (bucket_location['LocationConstraint'])
+                if s3_location is None:
+                    s3_location = ''
+                else:
+                    s3_location = '-' + s3_location
+                resume_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                    s3_location,
+                    bucket,
+                    pdf_file_name_in_s3)
                 create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
                 cursor.execute(create_sql,(None,'report2',request.form.get('report2'),datetime.now(),None,Id))
                 db_conn.commit()
         if 'report3' in request.files:
             if request.files['report3']:
+                report1 = request.files['report3']
+                pdf_file_name_in_s3 = type+"Id-" + str(Id) + "_report3_pdf"
+                s3 = boto3.resource('s3')
+                s3.Bucket(bucket).put_object(Key=pdf_file_name_in_s3, Body=report3)
+                bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
+                s3_location = (bucket_location['LocationConstraint'])
+                if s3_location is None:
+                    s3_location = ''
+                else:
+                    s3_location = '-' + s3_location
+                resume_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                    s3_location,
+                    bucket,
+                    pdf_file_name_in_s3)
                 create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
                 cursor.execute(create_sql,(None,'report3',request.form.get('report3'),datetime.now(),None,Id))
                 db_conn.commit()
         if 'report4' in request.files:
             if request.files['report4']:
+                report1 = request.files['report4']
+                pdf_file_name_in_s3 = type+"Id-" + str(Id) + "_report4_pdf"
+                s3 = boto3.resource('s3')
+                s3.Bucket(bucket).put_object(Key=pdf_file_name_in_s3, Body=report4)
+                bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
+                s3_location = (bucket_location['LocationConstraint'])
+                if s3_location is None:
+                    s3_location = ''
+                else:
+                    s3_location = '-' + s3_location
+                resume_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                    s3_location,
+                    bucket,
+                    pdf_file_name_in_s3)
                 create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
                 cursor.execute(create_sql,(None,'report4',request.form.get('report4'),datetime.now(),None,Id))
                 db_conn.commit()
