@@ -252,22 +252,26 @@ def internship(id=None):
         db_conn.commit()
     
     if request.method == 'POST': 
-        if request.files['report1']:
-            create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
-            cursor.execute(create_sql,(None,'report1',request.form.get('report1'),datetime.now(),None,Id))
-            db_conn.commit()
-        if request.files['report2']:
-            create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
-            cursor.execute(create_sql,(None,'report2',request.form.get('report2'),datetime.now(),None,Id))
-            db_conn.commit()
-        if request.files['report3']:
-            create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
-            cursor.execute(create_sql,(None,'report3',request.form.get('report3'),datetime.now(),None,Id))
-            db_conn.commit()
-        if request.files['report4']:
-            create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
-            cursor.execute(create_sql,(None,'report4',request.form.get('report4'),datetime.now(),None,Id))
-            db_conn.commit()
+        if 'report1' in request.files:
+            if request.files['report1']:
+                create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
+                cursor.execute(create_sql,(None,'report1',request.form.get('report1'),datetime.now(),None,Id))
+                db_conn.commit()
+        if 'report2' in request.files:
+            if request.files['report2']:
+                create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
+                cursor.execute(create_sql,(None,'report2',request.form.get('report2'),datetime.now(),None,Id))
+                db_conn.commit()
+        if 'report3' in request.files:
+            if request.files['report3']:
+                create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
+                cursor.execute(create_sql,(None,'report3',request.form.get('report3'),datetime.now(),None,Id))
+                db_conn.commit()
+        if 'report4' in request.files:
+            if request.files['report4']:
+                create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
+                cursor.execute(create_sql,(None,'report4',request.form.get('report4'),datetime.now(),None,Id))
+                db_conn.commit()
 
     if request.method == 'POST': 
         if request.form.get('mark1'):
