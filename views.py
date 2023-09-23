@@ -225,8 +225,9 @@ def editProfile():
     return render_template("editProfile.html",type=type,data = data)
 
 @app.route("/internship", methods=['GET', 'POST'])
-@app.route("/internship/<id>", methods=['GET', 'POST'])
-def internship(Id=None):
+@app.route("/internship/<studentId>", methods=['GET', 'POST'])
+def internship(studentId=None):
+    studentId = studentId
     type = session['userType']
     if type == 'admin':
         Id = Id
@@ -293,7 +294,7 @@ def internship(Id=None):
                 db_conn.commit()
         if 'report3' in request.files:
             if request.files['report3']:
-                report3 = request.files['report3']
+                report4 = request.files['report3']
                 pdf_file_name_in_s3 = type+"Id-" + str(Id) + "_report3_pdf"
                 s3 = boto3.resource('s3')
                 s3.Bucket(bucket).put_object(Key=pdf_file_name_in_s3, Body=report3)
@@ -333,28 +334,28 @@ def internship(Id=None):
     if request.method == 'POST': 
         if request.form.get('mark1'):
             update_sql = 'UPDATE report SET reportMark = %s WHERE studentID = %s AND reportName = %s'
-            cursor.execute(update_sql,(request.form.get('mark1'),Id,'report1'))
+            cursor.execute(update_sql,(request.form.get('mark1'),studentId,'report1'))
             db_conn.commit()
         if request.form.get('mark2'):
             update_sql = 'UPDATE report SET reportMark = %s WHERE studentID = %s AND reportName = %s'
-            cursor.execute(update_sql,(request.form.get('mark2'),Id,'report2'))
+            cursor.execute(update_sql,(request.form.get('mark2'),studentId,'report2'))
             db_conn.commit()
         if request.form.get('mark3'):
             update_sql = 'UPDATE report SET reportMark = %s WHERE studentID = %s AND reportName = %s'
-            cursor.execute(update_sql,(request.form.get('mark3'),Id,'report3'))
+            cursor.execute(update_sql,(request.form.get('mark3'),studentId,'report3'))
             db_conn.commit()
         if request.form.get('mark4'):
             update_sql = 'UPDATE report SET reportMark = %s WHERE studentID = %s AND reportName = %s'
-            cursor.execute(update_sql,(request.form.get('mark4'),Id,'report4'))
+            cursor.execute(update_sql,(request.form.get('mark4'),studentId,'report4'))
             db_conn.commit()
 
-    cursor.execute('SELECT * FROM report WHERE studentId = %s AND reportName = %s', (Id,'report1'))
+    cursor.execute('SELECT * FROM report WHERE studentId = %s AND reportName = %s', (studentId,'report1'))
     report1 = cursor.fetchone()
-    cursor.execute('SELECT * FROM report WHERE studentId = %s AND reportName = %s', (Id,'report2'))
+    cursor.execute('SELECT * FROM report WHERE studentId = %s AND reportName = %s', (studentId,'report2'))
     report2 = cursor.fetchone()
-    cursor.execute('SELECT * FROM report WHERE studentId = %s AND reportName = %s', (Id,'report3'))
+    cursor.execute('SELECT * FROM report WHERE studentId = %s AND reportName = %s', (studentId,'report3'))
     report3 = cursor.fetchone()
-    cursor.execute('SELECT * FROM report WHERE studentId = %s AND reportName = %s', (Id,'report4'))
+    cursor.execute('SELECT * FROM report WHERE studentId = %s AND reportName = %s', (studentId,'report4'))
     report4 = cursor.fetchone()
 
     if report1 and report2 and report3 and report4:
