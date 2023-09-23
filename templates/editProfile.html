@@ -15,16 +15,17 @@
                                 <h5>Profile Picture</h5>
                                 <div class="m-b-25">
                                     <div class="image-upload">
-                                        <label for="img">
-                                            {% if data[4] %}
-                                            <img src="{{data[4]}}" style="height: 100px; width: 100px;" class="img-radius"
-                                                alt="User-Profile-Image">
-                                            {% else %}
-                                            <img src="{{ url_for('static', filename='img/profile.png') }}"
-                                                style="height: 100px; width: 100px;" class="img-radius"
-                                                alt="User-Profile-Image">
-                                            {% endif %}
-                                        </label>
+                                       <label for="img">
+                                                {% if data[4] %}
+                                                <img id="preview-image" name="preview-image" src="{{data[4]}}"
+                                                    alt="Select Profile" style="height: 100px; width: 100px;" />
+                                                {% else %}
+                                                <img id="preview-image" name="preview-image"
+                                                    src="{{ url_for('static', filename='img/profile.png') }}"
+                                                    alt="Select Profile" style="height: 100px; width: 100px;" />
+                                                {% endif %}
+
+                                            </label>
                                         <input id="img" name="img" type="file" accept="image/*"
                                             onchange="previewImage()" style="display: none;"/>
                                     </div>
