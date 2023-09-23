@@ -264,12 +264,12 @@ def internship(Id=None):
                     s3_location = ''
                 else:
                     s3_location = '-' + s3_location
-                resume_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                report_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
                     s3_location,
                     bucket,
                     pdf_file_name_in_s3)
                 create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
-                cursor.execute(create_sql,(None,'report1',request.form.get('report1'),datetime.now(),None,Id))
+                cursor.execute(create_sql,(None,'report1',report_url,datetime.now(),None,Id))
                 db_conn.commit()
 
         if 'report2' in request.files:
@@ -284,12 +284,12 @@ def internship(Id=None):
                     s3_location = ''
                 else:
                     s3_location = '-' + s3_location
-                resume_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                report_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
                     s3_location,
                     bucket,
                     pdf_file_name_in_s3)
                 create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
-                cursor.execute(create_sql,(None,'report2',request.form.get('report2'),datetime.now(),None,Id))
+                cursor.execute(create_sql,(None,'report2',report_url,datetime.now(),None,Id))
                 db_conn.commit()
         if 'report3' in request.files:
             if request.files['report3']:
@@ -303,12 +303,12 @@ def internship(Id=None):
                     s3_location = ''
                 else:
                     s3_location = '-' + s3_location
-                resume_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                report_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
                     s3_location,
                     bucket,
                     pdf_file_name_in_s3)
                 create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
-                cursor.execute(create_sql,(None,'report3',request.form.get('report3'),datetime.now(),None,Id))
+                cursor.execute(create_sql,(None,'report3',report_url,datetime.now(),None,Id))
                 db_conn.commit()
         if 'report4' in request.files:
             if request.files['report4']:
@@ -322,12 +322,12 @@ def internship(Id=None):
                     s3_location = ''
                 else:
                     s3_location = '-' + s3_location
-                resume_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                report_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
                     s3_location,
                     bucket,
                     pdf_file_name_in_s3)
                 create_sql = 'insert into report VALUES (%s,%s,%s,%s,%s,%s)'
-                cursor.execute(create_sql,(None,'report4',request.form.get('report4'),datetime.now(),None,Id))
+                cursor.execute(create_sql,(None,'report4',report_url,datetime.now(),None,Id))
                 db_conn.commit()
 
     if request.method == 'POST': 
