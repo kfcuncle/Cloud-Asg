@@ -21,6 +21,7 @@ bucket = "tanjiahe-assignment"
 region = "us=east-1"
 
 @app.route("/", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET', 'POST'])
 @app.route("/login/<type>", methods=['GET', 'POST'])
 def login(type=None):
     if type:
@@ -48,6 +49,15 @@ def login(type=None):
             msg = 'Incorrect username/password!'
             
     return render_template("login.html",type=type,msg=msg)
+
+
+@app.route("/logOut")
+def logOut(type=None):
+    session['loggedin'] = False
+    session['Id'] = ''
+    session['userType'] = ''
+
+    return redirect(url_for("login"))
 
 @app.route("/signup", methods=['GET', 'POST'])
 @app.route("/signup/<type>", methods=['GET', 'POST'])
@@ -112,6 +122,18 @@ def jobList():
 
     return render_template("jobList.html",type=type, data=data,educationLevel=educationLevel,industry=industry,location=location)
 
+@app.route("/myJob", methods=['GET', 'POST'])
+def myJob():
+    type=session['userType']
+    Id=session['Id']
+    read_sql = "SELECT jobID, companyProfilePic, jobPosition, companyLocation, jobWorkingHour, jobSalary, jobPostedDate FROM job INNER JOIN company ON job.companyID = company.companyID WHERE company.companyID = %s"
+                
+    cursor = db_conn.cursor()
+    cursor.execute(read_sql,(Id))
+    data = cursor.fetchall()
+
+    return render_template("myJob.html",type=type, data=data)
+
 @app.route("/jobDetail/<jobID>" , methods=['GET', 'POST'])
 def jobDetail(jobID = None):
     type=session['userType']
@@ -131,12 +153,13 @@ def jobDetail(jobID = None):
             db_conn.commit()
         if request.method == 'POST' and 'reject' in request.form:
             cursor.execute("UPDATE job SET jobStatus = 'Rejected' WHERE jobID = '" + jobID + "'")
-            db_conn.commit()
-        
+            db_conn.commit()    
 
+    cursor.execute("SELECT * FROM application WHERE jobID = %s and studentID = %s",(jobID,Id))
+    application = cursor.fetchone()
     cursor.execute('SELECT jobID, jobPosition, companyLocation, jobIndustry, jobSalary, jobDescription, jobResponsibility, jobRequirement, jobPostedDate, jobWorkingHour, companyDescription, jobStatus FROM job INNER JOIN company ON job.companyID = company.companyID WHERE jobID =' + jobID)
     data = cursor.fetchone()
-    return render_template("jobDetail.html",type=type, data=data)
+    return render_template("jobDetail.html",type=type, data=data, application=application)
 
     
 
@@ -181,7 +204,7 @@ def editProfile():
         description = request.form.get("description")
 
         if img:
-            image_file_name_in_s3 = "Id-" + str(Id) + "_image_file"
+            image_file_name_in_s3 = type+"Id-" + str(Id) + "_image_file"
             s3 = boto3.resource('s3')
             s3.Bucket(bucket).put_object(Key=image_file_name_in_s3, Body=img)
             bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
@@ -197,7 +220,7 @@ def editProfile():
                 image_file_name_in_s3)
 
         if resume:    
-            pdf_file_name_in_s3 = "Id-" + str(Id) + "_resume_pdf"
+            pdf_file_name_in_s3 = type+"Id-" + str(Id) + "_resume_pdf"
             s3 = boto3.resource('s3')
             s3.Bucket(bucket).put_object(Key=pdf_file_name_in_s3, Body=resume)
             bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket)
@@ -213,7 +236,7 @@ def editProfile():
 
         if type == 'student':
             update_sql = 'UPDATE student SET studentName = %s, studentEmail = %s, studentProfilePic = %s, studentPhoneNo = %s, studentLocation = %s, studentProgramme = %s, studentCGPA = %s, studentJobExperience = %s, studentSkill = %s, studentResumeLink = %s WHERE studentID = %s'
-            cursor.execute(update_sql, (name,email,img_url,phone,location,programme,cgpa,jobExperience,skill,resume_url,Id))
+            cursor.execute(update_sql, (name,email,img,phone,location,programme,cgpa,jobExperience,skill,resume,Id))
             db_conn.commit()
         else:
             update_sql = 'UPDATE company SET companyName = %s, companyEmail = %s, companyProfilePic = %s, companyLocation = %s, companyIndustry = %s, companySize = %s, companyDescription = %s WHERE companyID = %s'
@@ -424,6 +447,31 @@ def supervise():
     data = cursor.fetchall()
 
     return render_template("supervise.html",type=type, data=data)
+
+@app.route("/studentList/<Id>", methods=['GET', 'POST'])
+def studentList(Id=None):
+    type = session['userType']
+    Id = Id
+    read_sql = "SELECT student.studentID, studentProfilePic,studentProgramme,studentCGPA FROM job INNER JOIN application ON application.jobID = job.jobID INNER JOIN student ON student.studentID = application.studentID WHERE job.jobID = %s"    
+    cursor = db_conn.cursor()
+    cursor.execute(read_sql,(Id))
+    data = cursor.fetchall()
+
+    return render_template("studentList.html",type=type, data=data)
+
+@app.route("/studentProfile/<Id>")
+def studentProfile(Id=None):
+    Id = Id
+    type = 'student'
+    cursor = db_conn.cursor()
+    cursor.execute('SELECT * FROM student WHERE studentId = %s', (Id))
+    data = cursor.fetchone()
+    return render_template("profile.html",type=type,data = data)
+
+@app.route("/aboutUs")
+def aboutUs(Id=None):
+    type = session['userType']
+    return render_template("aboutUs.html",type=type)
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
