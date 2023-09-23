@@ -274,7 +274,7 @@ def internship(Id=None):
 
         if 'report2' in request.files:
             if request.files['report2']:
-                report1 = request.files['report2']
+                report2 = request.files['report2']
                 pdf_file_name_in_s3 = type+"Id-" + str(Id) + "_report2_pdf"
                 s3 = boto3.resource('s3')
                 s3.Bucket(bucket).put_object(Key=pdf_file_name_in_s3, Body=report2)
@@ -293,7 +293,7 @@ def internship(Id=None):
                 db_conn.commit()
         if 'report3' in request.files:
             if request.files['report3']:
-                report1 = request.files['report3']
+                report3 = request.files['report3']
                 pdf_file_name_in_s3 = type+"Id-" + str(Id) + "_report3_pdf"
                 s3 = boto3.resource('s3')
                 s3.Bucket(bucket).put_object(Key=pdf_file_name_in_s3, Body=report3)
@@ -312,7 +312,7 @@ def internship(Id=None):
                 db_conn.commit()
         if 'report4' in request.files:
             if request.files['report4']:
-                report1 = request.files['report4']
+                report4 = request.files['report4']
                 pdf_file_name_in_s3 = type+"Id-" + str(Id) + "_report4_pdf"
                 s3 = boto3.resource('s3')
                 s3.Bucket(bucket).put_object(Key=pdf_file_name_in_s3, Body=report4)
