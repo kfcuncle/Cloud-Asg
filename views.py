@@ -86,7 +86,7 @@ def jobList():
     jobEducationLevel = request.form.get('comp_select_educationLevel')
     jobIndustry = request.form.get('comp_select_industry')
     companyLocation = request.form.get('comp_select_location')
-    read_sql = "SELECT jobID, jobPosition, jobSalary, jobIndustry, jobPostedDate, companyLocation FROM job INNER JOIN company ON job.companyID = company.companyID WHERE jobStatus = 'Approved'"
+    read_sql = "SELECT jobID, companyProfilePic, jobPosition, companyLocation, jobWorkingHour, jobSalary, jobPostedDate FROM job INNER JOIN company ON job.companyID = company.companyID WHERE jobStatus = 'Approved'"
     if jobEducationLevel or jobIndustry or companyLocation:
         read_sql += " AND"
         if jobEducationLevel :
