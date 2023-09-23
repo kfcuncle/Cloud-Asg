@@ -228,7 +228,7 @@ def editProfile():
 @app.route("/internship/<studentId>", methods=['GET', 'POST'])
 def internship(studentId=None):
     type = session['userType']
-    if type == 'admin':
+    if type == 'supervisor':
         Id = studentId
     else:
         Id = session['Id']
