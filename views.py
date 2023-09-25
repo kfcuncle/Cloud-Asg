@@ -393,13 +393,15 @@ def internship(studentId=None):
                 grade = 'F'
             update_sql = 'UPDATE internship SET internshipResult = %s WHERE studentID = %s'
             cursor.execute(update_sql,(grade,Id))
-
-    cursor.execute('SELECT studentID,studentName,studentFaculty,studentProgramme,studentCohort FROM student WHERE studentId = %s', (Id))
+            
+    cursor.execute('SELECT studentID,studentName,studentFaculty,studentProgramme,studentCohort FROM student WHERE studentID = %s', (Id))
     data = cursor.fetchone()
-    cursor.execute('SELECT supervisor.supervisorID, supervisorName, internshipStartDate, internshipEndDate, internshipStatus, internshipResult FROM internship INNER JOIN supervisor ON supervisor.supervisorID = internship.supervisorID WHERE studentId = %s', (Id))
+    cursor.execute('SELECT internshipStartDate, internshipEndDate, internshipStatus, internshipResult FROM internship INNER JOIN student ON internship.studentID = student.studentID WHERE internship.studentID = %s', (Id))
     internship = cursor.fetchone()
+    cursor.execute('SELECT supervisorName FROM supervisor INNER JOIN internship ON internship.supervisorID = supervisor.supervisorID INNER JOIN student ON student.studentID = internship.studentID WHERE internship.studentID = %s', (Id))
+    supervisor = cursor.fetchone()
     
-    return render_template("internship.html",type=type,data = data, internship=internship, report1=report1, report2=report2, report3=report3, report4=report4)
+    return render_template("internship.html",type=type,data = data, internship=internship, supervisor=supervisor, report1=report1, report2=report2, report3=report3, report4=report4)
 
 @app.route("/postJob", methods=['GET', 'POST'])
 def postJob():
